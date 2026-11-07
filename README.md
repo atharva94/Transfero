@@ -14,7 +14,7 @@ Transfer photos, videos, and other files from an iPhone to a Windows PC over you
 2. Run `npm install` once, then `npm run build`.
 3. Run `npm start` and leave that window open.
 4. Open one of the `http://...` addresses printed in PowerShell on your iPhone.
-5. Choose photos, videos, or other files. They are saved in `C:\photos\uploads`; Transfero creates the folder if it does not exist.
+5. Choose photos, videos, other files, or a folder. Folder uploads keep their subfolder structure under `C:\photos\uploads`; Transfero creates the required folders if they do not exist.
 
 If Windows asks whether Node.js may communicate on the network, allow it on **Private networks**. If the page does not load, check that both devices are on the same Wi-Fi and that the Windows firewall allows Node.js on the private network.
 

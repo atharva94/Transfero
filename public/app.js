@@ -1,5 +1,6 @@
 const mediaPicker = document.querySelector("#media-picker");
 const filePicker = document.querySelector("#file-picker");
+const folderPicker = document.querySelector("#folder-picker");
 const dropZone = document.querySelector("#drop-zone");
 const transferSection = document.querySelector("#transfer-section");
 const transferList = document.querySelector("#transfer-list");
@@ -30,7 +31,7 @@ function updateSummary() {
   transferSummary.textContent = `${done} of ${total} transferred${failed ? ` · ${failed} failed` : ""}`;
 }
 
-function addTransfer(file) {
+function addTransfer(file, relativePath) {
   const item = document.createElement("li");
   item.className = "transfer-item";
 
@@ -38,7 +39,8 @@ function addTransfer(file) {
   details.className = "file-details";
   const name = document.createElement("strong");
   name.className = "file-name";
-  name.textContent = file.name;
+  name.textContent = relativePath;
+  name.title = relativePath;
   const metadata = document.createElement("span");
   metadata.className = "file-metadata";
   metadata.textContent = `${formatBytes(file.size)} · Waiting`;
@@ -55,7 +57,7 @@ function addTransfer(file) {
   item.append(details, progress, statusElement);
   transferList.append(item);
 
-  const transfer = { file, item, metadata, progress, statusElement, status: "queued" };
+  const transfer = { file, item, metadata, progress, statusElement, relativePath, status: "queued" };
   transfers.push(transfer);
   pendingFiles.push(transfer);
   transferSection.hidden = false;
@@ -65,13 +67,13 @@ function addTransfer(file) {
 
 function queueFiles(fileList) {
   for (const file of fileList) {
-    addTransfer(file);
+    addTransfer(file, file.webkitRelativePath || file.name);
   }
 }
 
 function upload(transfer) {
   const request = new XMLHttpRequest();
-  request.open("POST", `/upload?name=${encodeURIComponent(transfer.file.name)}`);
+  request.open("POST", `/upload?path=${encodeURIComponent(transfer.relativePath)}`);
   request.upload.addEventListener("progress", (event) => {
     if (!event.lengthComputable) return;
     transfer.progress.value = Math.round((event.loaded / event.total) * 100);
@@ -132,6 +134,7 @@ function handlePicker(input) {
 
 handlePicker(mediaPicker);
 handlePicker(filePicker);
+handlePicker(folderPicker);
 
 dropZone.addEventListener("dragover", (event) => {
   event.preventDefault();

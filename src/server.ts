@@ -47,22 +47,41 @@ async function serveStaticFile(response: ServerResponse, pathname: string): Prom
   }
 }
 
-function safeFileName(input: string): string {
-  const baseName = path.basename(input.replaceAll("\\", "/"));
-  const cleaned = baseName
+function safePathSegment(input: string): string {
+  const cleaned = input
     .replace(/[<>:"|?*\x00-\x1f]/g, "_")
     .replace(/[. ]+$/g, "")
     .slice(0, 180);
-  return cleaned || "upload";
+  if (!cleaned || /^(con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\.|$)/i.test(cleaned)) {
+    return `_${cleaned || "upload"}`;
+  }
+  return cleaned;
 }
 
-async function createUniqueFile(name: string) {
+function safeRelativePath(input: string): string[] {
+  const normalized = input.replaceAll("\\", "/");
+  const segments = normalized.split("/");
+  if (
+    normalized.startsWith("/") ||
+    /^[a-zA-Z]:/.test(normalized) ||
+    segments.length > 32 ||
+    segments.some((segment) => !segment || segment === "." || segment === "..")
+  ) {
+    throw new Error("The upload path is invalid.");
+  }
+  return segments.map(safePathSegment);
+}
+
+async function createUniqueFile(relativePath: string[]) {
+  const directory = path.join(uploadDirectory, ...relativePath.slice(0, -1));
+  await mkdir(directory, { recursive: true });
+  const name = relativePath.at(-1)!;
   const extension = path.extname(name);
   const stem = extension ? name.slice(0, -extension.length) : name;
 
   for (let suffix = 0; ; suffix += 1) {
     const candidate = suffix === 0 ? name : `${stem} (${suffix})${extension}`;
-    const filePath = path.join(uploadDirectory, candidate);
+    const filePath = path.join(directory, candidate);
     try {
       const file = await open(filePath, "wx");
       return { file, filePath, name: candidate };
@@ -75,21 +94,26 @@ async function createUniqueFile(name: string) {
 }
 
 async function receiveUpload(request: IncomingMessage, response: ServerResponse, url: URL): Promise<void> {
-  const requestedName = url.searchParams.get("name");
-  if (!requestedName) {
-    sendText(response, 400, "A file name is required.");
+  const requestedPath = url.searchParams.get("path");
+  if (!requestedPath) {
+    sendText(response, 400, "A file path is required.");
     request.resume();
     return;
   }
 
   let destination: Awaited<ReturnType<typeof createUniqueFile>> | undefined;
   try {
-    destination = await createUniqueFile(safeFileName(requestedName));
+    destination = await createUniqueFile(safeRelativePath(requestedPath));
     await pipeline(request, destination.file.createWriteStream());
     const fileInfo = await stat(destination.filePath);
     response.writeHead(201, { "Content-Type": "application/json; charset=utf-8" });
     response.end(JSON.stringify({ name: destination.name, size: fileInfo.size }));
   } catch (error) {
+    if (error instanceof Error && error.message === "The upload path is invalid.") {
+      sendText(response, 400, error.message);
+      request.resume();
+      return;
+    }
     if (destination) {
       try {
         await unlink(destination.filePath);
