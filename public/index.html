@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#101522">
+    <title>Transfero — Local file transfer</title>
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="Transfero home">
+          <span class="brand-mark" aria-hidden="true">T</span>
+          <span>transfero</span>
+        </a>
+        <span class="connection"><span class="status-dot"></span> Same Wi-Fi, direct transfer</span>
+      </header>
+
+      <section class="intro">
+        <p class="eyebrow">YOUR LOCAL TRANSFER SPACE</p>
+        <h1>Move it over.<br><span>Keep it yours.</span></h1>
+        <p class="intro-copy">Send photos, videos, and files from your iPhone straight to this computer. Nothing is uploaded to the cloud.</p>
+      </section>
+
+      <section class="upload-card" aria-labelledby="upload-title">
+        <div class="card-heading">
+          <div>
+            <p class="eyebrow">READY WHEN YOU ARE</p>
+            <h2 id="upload-title">Add files to transfer</h2>
+          </div>
+          <span class="local-badge"><span aria-hidden="true">↗</span> Saved on this PC</span>
+        </div>
+
+        <div class="pickers">
+          <label class="picker picker-primary">
+            <input id="media-picker" type="file" accept="image/*,video/*" multiple>
+            <span class="picker-icon" aria-hidden="true">▧</span>
+            <span class="picker-text"><strong>Choose photos &amp; videos</strong><small>Pick from your iPhone library</small></span>
+            <span class="picker-arrow" aria-hidden="true">→</span>
+          </label>
+          <label class="picker">
+            <input id="file-picker" type="file" multiple>
+            <span class="picker-icon" aria-hidden="true">＋</span>
+            <span class="picker-text"><strong>Choose other files</strong><small>Documents, downloads, and more</small></span>
+            <span class="picker-arrow" aria-hidden="true">→</span>
+          </label>
+        </div>
+
+        <div id="drop-zone" class="drop-zone" tabindex="0" role="button" aria-label="Drop files here or choose files">
+          <span class="drop-icon" aria-hidden="true">↓</span>
+          <span><strong>Or drop files here</strong><small>Files transfer directly over your local network</small></span>
+        </div>
+
+        <section id="transfer-section" class="transfer-section" aria-live="polite" hidden>
+          <div class="transfer-heading">
+            <h3 id="transfer-summary">Transfers</h3>
+            <button id="clear-button" class="text-button" type="button">Clear completed</button>
+          </div>
+          <ul id="transfer-list" class="transfer-list"></ul>
+        </section>
+      </section>
+
+      <footer>
+        <span><span class="lock-icon" aria-hidden="true">◈</span> Files stay on your computer</span>
+        <span>Transfero · Local network only</span>
+      </footer>
+    </main>
+    <script src="/app.js" defer></script>
+  </body>
+</html>

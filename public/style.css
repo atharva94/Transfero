@@ -1,0 +1,139 @@
+:root {
+  color-scheme: dark;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #f3f5fa;
+  background: #101522;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  --muted: #9da6b8;
+  --line: #2a3244;
+  --mint: #a7f3d0;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(80, 107, 151, .2), transparent 49%),
+    #101522;
+}
+
+.shell { width: min(100% - 40px, 760px); margin: 0 auto; }
+
+.topbar {
+  height: 82px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, .07);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #f4f6fb;
+  font: 800 19px "Segoe UI", sans-serif;
+  letter-spacing: -.8px;
+  text-decoration: none;
+}
+
+.brand-mark {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  color: #10221c;
+  background: var(--mint);
+  font-size: 15px;
+}
+
+.connection, footer, .local-badge { color: var(--muted); font-size: 12px; }
+.connection { display: flex; align-items: center; gap: 8px; }
+.status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 12px #a7f3d080; }
+
+.intro { padding: 66px 0 32px; text-align: center; }
+.eyebrow { margin: 0 0 12px; color: #9da9bc; font-size: 10px; font-weight: 700; letter-spacing: 1.8px; }
+h1, h2, h3, p { margin-top: 0; }
+h1 { margin-bottom: 15px; font: 800 clamp(38px, 8vw, 58px)/1.08 "Segoe UI", sans-serif; letter-spacing: -2.8px; }
+h1 span { color: var(--mint); }
+.intro-copy { max-width: 455px; margin: 0 auto; color: #aab3c3; font-size: 14px; line-height: 1.7; }
+
+.upload-card {
+  padding: 27px;
+  border: 1px solid #2a3346;
+  border-radius: 18px;
+  background: linear-gradient(145deg, rgba(30, 39, 56, .96), rgba(22, 29, 43, .96));
+  box-shadow: 0 25px 80px #080b1255;
+}
+
+.card-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
+.card-heading .eyebrow { margin-bottom: 7px; font-size: 9px; }
+h2 { margin: 0; font: 700 19px "Segoe UI", sans-serif; letter-spacing: -.45px; }
+.local-badge { display: flex; align-items: center; gap: 6px; white-space: nowrap; padding: 7px 10px; border: 1px solid #334254; border-radius: 99px; font-size: 10px; }
+.local-badge span { color: var(--mint); }
+
+.pickers { display: grid; gap: 10px; }
+.picker {
+  min-height: 71px;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 12px 15px;
+  border: 1px solid #343e51;
+  border-radius: 11px;
+  background: rgba(15, 21, 33, .58);
+  cursor: pointer;
+  transition: border-color .15s, background .15s, transform .15s;
+}
+.picker:hover { border-color: #708475; background: rgba(22, 35, 38, .8); transform: translateY(-1px); }
+.picker-primary { border-color: #567365; background: rgba(23, 45, 40, .32); }
+.picker input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; clip-path: inset(50%); }
+.picker:focus-within { outline: 2px solid var(--mint); outline-offset: 3px; }
+.picker-icon { width: 39px; height: 39px; display: grid; place-items: center; flex: 0 0 auto; border-radius: 10px; color: var(--mint); background: #a7f3d017; font-size: 22px; }
+.picker-text { display: grid; gap: 4px; }
+.picker-text strong, .drop-zone strong { font-size: 13px; font-weight: 600; }
+.picker-text small, .drop-zone small { color: #9ca7ba; font-size: 11px; }
+.picker-arrow { margin-left: auto; color: #a5b2c2; font-size: 20px; }
+
+.drop-zone { min-height: 74px; display: flex; align-items: center; justify-content: center; gap: 11px; margin-top: 13px; border: 1px dashed #465166; border-radius: 10px; color: #cdd4df; cursor: pointer; transition: background .15s, border-color .15s; }
+.drop-zone:hover, .drop-zone.dragging { border-color: var(--mint); background: #a7f3d00b; }
+.drop-zone > span:last-child { display: grid; gap: 4px; }
+.drop-icon { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; color: var(--mint); background: #a7f3d017; font-size: 18px; }
+
+.transfer-section { margin-top: 24px; }
+.transfer-heading { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+h3 { margin: 0; font: 600 13px "Segoe UI", sans-serif; }
+.text-button { padding: 5px 0; border: 0; color: #aeb8c7; background: none; font: inherit; font-size: 11px; cursor: pointer; }
+.text-button:hover { color: var(--mint); }
+.transfer-list { display: grid; gap: 8px; max-height: 300px; margin: 0; padding: 0; overflow-y: auto; list-style: none; }
+.transfer-item { display: grid; grid-template-columns: minmax(0, 1fr) 90px 70px; align-items: center; gap: 12px; padding: 11px 12px; border: 1px solid #313a4b; border-radius: 9px; background: #1016228c; }
+.file-details { min-width: 0; display: grid; gap: 4px; }
+.file-name { overflow: hidden; color: #e7ebf2; font-size: 12px; font-weight: 500; text-overflow: ellipsis; white-space: nowrap; }
+.file-metadata { color: #8995a8; font-size: 10px; }
+.transfer-item progress { width: 100%; height: 5px; accent-color: var(--mint); }
+.file-status { color: var(--mint); font-size: 10px; text-align: right; }
+.transfer-item.failed .file-status { color: #ff9a9a; }
+
+footer { display: flex; justify-content: space-between; gap: 10px; padding: 23px 4px 35px; font-size: 10px; }
+.lock-icon { margin-right: 4px; color: var(--mint); }
+
+@media (max-width: 560px) {
+  .shell { width: min(100% - 28px, 760px); }
+  .topbar { height: 68px; }
+  .connection { font-size: 10px; }
+  .intro { padding: 49px 0 25px; }
+  .intro-copy { max-width: 340px; font-size: 13px; }
+  .upload-card { padding: 19px 15px; border-radius: 14px; }
+  .card-heading { align-items: flex-start; }
+  .local-badge { padding: 6px 8px; font-size: 9px; }
+  .transfer-item { grid-template-columns: minmax(0, 1fr) 58px; gap: 8px; }
+  .transfer-item progress { grid-column: 1; grid-row: 2; }
+  .file-status { grid-column: 2; grid-row: 1 / span 2; }
+  footer { font-size: 9px; }
+}
